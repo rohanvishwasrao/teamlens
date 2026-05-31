@@ -1,0 +1,399 @@
+{
+  "project": {
+    "key": "PLAT",
+    "name": "Platform Engineering",
+    "lead": "sarah.chen",
+    "team_size": 8
+  },
+  "sprints": [
+    {
+      "id": "SPRINT-41",
+      "name": "Sprint 41 — Auth & Infra Hardening",
+      "start_date": "2024-03-04",
+      "end_date": "2024-03-15",
+      "goal": "Harden authentication service and reduce infra alert noise by 40%",
+      "status": "completed",
+      "velocity_points_committed": 52,
+      "velocity_points_completed": 38,
+      "tickets": [
+        {
+          "id": "PLAT-1041",
+          "type": "Story",
+          "title": "Migrate auth service to OAuth 2.0 PKCE flow",
+          "assignee": "arjun.mehta",
+          "reporter": "sarah.chen",
+          "priority": "High",
+          "story_points": 8,
+          "status": "Done",
+          "created_at": "2024-03-01",
+          "resolved_at": "2024-03-12",
+          "cycle_time_days": 11,
+          "labels": ["auth", "security", "backend"],
+          "comments": [
+            { "author": "arjun.mehta", "date": "2024-03-06", "body": "PKCE implementation done, waiting on security team review." },
+            { "author": "priya.nair", "date": "2024-03-07", "body": "Security review complete. One concern: token expiry is set too long at 24h. Recommend 1h for access tokens." },
+            { "author": "arjun.mehta", "date": "2024-03-08", "body": "Adjusted to 1h access / 7d refresh. Resubmitting." }
+          ],
+          "blocked_days": 2,
+          "blocker_reason": "Awaiting security review"
+        },
+        {
+          "id": "PLAT-1042",
+          "type": "Story",
+          "title": "Reduce Datadog alert noise — P3/P4 threshold tuning",
+          "assignee": "marcus.lee",
+          "reporter": "sarah.chen",
+          "priority": "Medium",
+          "story_points": 5,
+          "status": "Done",
+          "created_at": "2024-03-01",
+          "resolved_at": "2024-03-09",
+          "cycle_time_days": 8,
+          "labels": ["observability", "infra"],
+          "comments": [
+            { "author": "marcus.lee", "date": "2024-03-05", "body": "Baseline alert volume: 340/week. After tuning P3 thresholds, down to 190/week. Still above target." },
+            { "author": "sarah.chen", "date": "2024-03-06", "body": "Good progress. Can we suppress the disk I/O P4s during batch jobs?" },
+            { "author": "marcus.lee", "date": "2024-03-08", "body": "Done. Projected alert volume now 140/week. Within target." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1043",
+          "type": "Bug",
+          "title": "Race condition in session invalidation on concurrent logout",
+          "assignee": "arjun.mehta",
+          "reporter": "david.kim",
+          "priority": "High",
+          "story_points": 3,
+          "status": "Done",
+          "created_at": "2024-03-02",
+          "resolved_at": "2024-03-14",
+          "cycle_time_days": 12,
+          "labels": ["auth", "bug", "concurrency"],
+          "comments": [
+            { "author": "arjun.mehta", "date": "2024-03-04", "body": "Reproduced. Issue is in the Redis TTL eviction order during concurrent DEL calls." },
+            { "author": "arjun.mehta", "date": "2024-03-10", "body": "Fix ready. Using Lua script for atomic DEL+check. Need Priya to review Redis changes." },
+            { "author": "priya.nair", "date": "2024-03-11", "body": "Lua script looks correct. Approved." }
+          ],
+          "blocked_days": 4,
+          "blocker_reason": "Waiting on Redis expert review (Priya on PTO)"
+        },
+        {
+          "id": "PLAT-1044",
+          "type": "Story",
+          "title": "Implement distributed tracing for API gateway",
+          "assignee": "emily.zhang",
+          "reporter": "sarah.chen",
+          "priority": "High",
+          "story_points": 13,
+          "status": "Carried over",
+          "created_at": "2024-03-01",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["observability", "api-gateway", "tracing"],
+          "comments": [
+            { "author": "emily.zhang", "date": "2024-03-05", "body": "OpenTelemetry setup done for 3 of 7 services. Hitting issues with the legacy gRPC services." },
+            { "author": "emily.zhang", "date": "2024-03-12", "body": "gRPC interceptor approach not working cleanly. Exploring sidecar proxy option. This will take more time than estimated." },
+            { "author": "sarah.chen", "date": "2024-03-13", "body": "Let's carry this to Sprint 42. Emily, can you scope a spike for the sidecar approach?" }
+          ],
+          "blocked_days": 5,
+          "blocker_reason": "Underestimated complexity of legacy gRPC instrumentation"
+        },
+        {
+          "id": "PLAT-1045",
+          "type": "Task",
+          "title": "Rotate all production secrets — quarterly cycle",
+          "assignee": "marcus.lee",
+          "reporter": "sarah.chen",
+          "priority": "Critical",
+          "story_points": 2,
+          "status": "Done",
+          "created_at": "2024-03-04",
+          "resolved_at": "2024-03-06",
+          "cycle_time_days": 2,
+          "labels": ["security", "ops", "compliance"],
+          "comments": [],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1046",
+          "type": "Story",
+          "title": "Service mesh policy enforcement — mTLS between internal services",
+          "assignee": "priya.nair",
+          "reporter": "sarah.chen",
+          "priority": "High",
+          "story_points": 8,
+          "status": "Done",
+          "created_at": "2024-03-01",
+          "resolved_at": "2024-03-15",
+          "cycle_time_days": 14,
+          "labels": ["security", "infra", "service-mesh"],
+          "comments": [
+            { "author": "priya.nair", "date": "2024-03-07", "body": "Istio mTLS configured for 12 services. Payments service failing cert validation — investigating." },
+            { "author": "priya.nair", "date": "2024-03-11", "body": "Payments service uses a non-standard cert chain. Required custom Istio DestinationRule. Fixed." },
+            { "author": "sarah.chen", "date": "2024-03-15", "body": "All services passing mTLS validation in staging. Approving for prod rollout." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1047",
+          "type": "Bug",
+          "title": "Memory leak in API gateway under sustained load",
+          "assignee": "david.kim",
+          "reporter": "marcus.lee",
+          "priority": "Critical",
+          "story_points": 5,
+          "status": "Done",
+          "created_at": "2024-03-03",
+          "resolved_at": "2024-03-08",
+          "cycle_time_days": 5,
+          "labels": ["api-gateway", "performance", "bug"],
+          "comments": [
+            { "author": "david.kim", "date": "2024-03-04", "body": "Heap profiling shows unclosed gzip streams. Every request that accepts compressed response leaks ~2KB." },
+            { "author": "david.kim", "date": "2024-03-06", "body": "Fix: always close GZIPOutputStream in finally block. Load tested at 10K RPM for 30min — stable." },
+            { "author": "marcus.lee", "date": "2024-03-07", "body": "Memory usage flat at 512MB sustained. Confirmed fix." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1048",
+          "type": "Story",
+          "title": "Automated canary deployment pipeline for backend services",
+          "assignee": "emily.zhang",
+          "reporter": "sarah.chen",
+          "priority": "Medium",
+          "story_points": 8,
+          "status": "In Progress",
+          "created_at": "2024-03-08",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["ci-cd", "deployment", "automation"],
+          "comments": [
+            { "author": "emily.zhang", "date": "2024-03-11", "body": "Pipeline skeleton done. Traffic splitting at 5%/25%/100% working in staging." },
+            { "author": "emily.zhang", "date": "2024-03-14", "body": "Rollback automation needs more work. Auto-rollback on error rate threshold not triggering correctly." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        }
+      ]
+    },
+    {
+      "id": "SPRINT-42",
+      "name": "Sprint 42 — Observability & Resilience",
+      "start_date": "2024-03-18",
+      "end_date": "2024-03-29",
+      "goal": "Complete distributed tracing rollout and achieve 99.95% API gateway uptime",
+      "status": "active",
+      "velocity_points_committed": 47,
+      "velocity_points_completed": 21,
+      "tickets": [
+        {
+          "id": "PLAT-1049",
+          "type": "Story",
+          "title": "Complete distributed tracing — legacy gRPC services (sidecar approach)",
+          "assignee": "emily.zhang",
+          "reporter": "sarah.chen",
+          "priority": "High",
+          "story_points": 13,
+          "status": "In Progress",
+          "created_at": "2024-03-18",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["observability", "grpc", "tracing"],
+          "comments": [
+            { "author": "emily.zhang", "date": "2024-03-19", "body": "Envoy sidecar working for 2 gRPC services. 3 more to go." },
+            { "author": "emily.zhang", "date": "2024-03-22", "body": "Blocked on DevOps approval for sidecar injection in prod namespace. Ticket raised with James (DevOps)." }
+          ],
+          "blocked_days": 3,
+          "blocker_reason": "Pending DevOps approval for prod namespace sidecar injection"
+        },
+        {
+          "id": "PLAT-1050",
+          "type": "Story",
+          "title": "Circuit breaker implementation for downstream payment APIs",
+          "assignee": "arjun.mehta",
+          "reporter": "david.kim",
+          "priority": "High",
+          "story_points": 8,
+          "status": "Done",
+          "created_at": "2024-03-18",
+          "resolved_at": "2024-03-25",
+          "cycle_time_days": 7,
+          "labels": ["resilience", "payments", "backend"],
+          "comments": [
+            { "author": "arjun.mehta", "date": "2024-03-21", "body": "Resilience4j circuit breaker configured. Half-open state tested with 10% traffic. Working as expected." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1051",
+          "type": "Bug",
+          "title": "Grafana dashboard showing stale metrics after node restart",
+          "assignee": "marcus.lee",
+          "reporter": "emily.zhang",
+          "priority": "Medium",
+          "story_points": 3,
+          "status": "Done",
+          "created_at": "2024-03-19",
+          "resolved_at": "2024-03-21",
+          "cycle_time_days": 2,
+          "labels": ["observability", "grafana", "bug"],
+          "comments": [
+            { "author": "marcus.lee", "date": "2024-03-20", "body": "Root cause: Prometheus scrape interval not aligned with node restart grace period. Fixed via relabeling rules." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1052",
+          "type": "Story",
+          "title": "SLO dashboard — error budget tracking for Tier-1 services",
+          "assignee": "priya.nair",
+          "reporter": "sarah.chen",
+          "priority": "High",
+          "story_points": 8,
+          "status": "In Progress",
+          "created_at": "2024-03-18",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["observability", "slo", "reliability"],
+          "comments": [
+            { "author": "priya.nair", "date": "2024-03-22", "body": "Error budget burn rate alerts configured for auth and payments. Working on the dashboard UI." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1053",
+          "type": "Task",
+          "title": "Load test API gateway at 50K RPM — validate autoscaling",
+          "assignee": "david.kim",
+          "reporter": "sarah.chen",
+          "priority": "Medium",
+          "story_points": 5,
+          "status": "To Do",
+          "created_at": "2024-03-20",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["performance", "api-gateway", "testing"],
+          "comments": [],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1054",
+          "type": "Story",
+          "title": "Implement retry logic with exponential backoff for all external API calls",
+          "assignee": "arjun.mehta",
+          "reporter": "sarah.chen",
+          "priority": "Medium",
+          "story_points": 5,
+          "status": "In Progress",
+          "created_at": "2024-03-21",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["resilience", "backend"],
+          "comments": [
+            { "author": "arjun.mehta", "date": "2024-03-24", "body": "Implemented for payment and notification APIs. Testing jitter behavior under simulated failures." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        },
+        {
+          "id": "PLAT-1055",
+          "type": "Bug",
+          "title": "Canary rollback not triggering on 5xx spike — pipeline bug",
+          "assignee": "emily.zhang",
+          "reporter": "marcus.lee",
+          "priority": "High",
+          "story_points": 5,
+          "status": "To Do",
+          "created_at": "2024-03-25",
+          "resolved_at": null,
+          "cycle_time_days": null,
+          "labels": ["ci-cd", "bug", "deployment"],
+          "comments": [
+            { "author": "emily.zhang", "date": "2024-03-25", "body": "Known issue from Sprint 41. Error rate threshold comparison has an off-by-one. Will fix this sprint." }
+          ],
+          "blocked_days": 0,
+          "blocker_reason": null
+        }
+      ]
+    }
+  ],
+  "team_members": [
+    {
+      "username": "sarah.chen",
+      "role": "Engineering Manager",
+      "seniority": "Staff",
+      "tickets_assigned_last_2_sprints": 0,
+      "tickets_reviewed_last_2_sprints": 12,
+      "avg_review_turnaround_hours": 6
+    },
+    {
+      "username": "arjun.mehta",
+      "role": "Senior Software Engineer",
+      "seniority": "Senior",
+      "tickets_assigned_last_2_sprints": 4,
+      "tickets_reviewed_last_2_sprints": 8,
+      "avg_review_turnaround_hours": 18,
+      "note": "High ticket load. Carrying auth and resilience work simultaneously."
+    },
+    {
+      "username": "emily.zhang",
+      "role": "Software Engineer",
+      "seniority": "Mid",
+      "tickets_assigned_last_2_sprints": 4,
+      "tickets_reviewed_last_2_sprints": 3,
+      "avg_review_turnaround_hours": 36,
+      "note": "Two consecutive carry-overs. Blocked externally on Sprint 42 work. Possible scope underestimation pattern."
+      },
+    {
+      "username": "priya.nair",
+      "role": "Senior Software Engineer",
+      "seniority": "Senior",
+      "tickets_assigned_last_2_sprints": 2,
+      "tickets_reviewed_last_2_sprints": 9,
+      "avg_review_turnaround_hours": 10
+    },
+    {
+      "username": "marcus.lee",
+      "role": "Site Reliability Engineer",
+      "seniority": "Senior",
+      "tickets_assigned_last_2_sprints": 3,
+      "tickets_reviewed_last_2_sprints": 5,
+      "avg_review_turnaround_hours": 14
+    },
+    {
+      "username": "david.kim",
+      "role": "Software Engineer",
+      "seniority": "Mid",
+      "tickets_assigned_last_2_sprints": 2,
+      "tickets_reviewed_last_2_sprints": 4,
+      "avg_review_turnaround_hours": 22
+    }
+  ],
+  "sprint_health_summary": {
+    "sprint_41": {
+      "completion_rate_pct": 73,
+      "carry_over_points": 21,
+      "avg_cycle_time_days": 7.3,
+      "blocked_tickets": 2,
+      "total_blocked_days": 6,
+      "sentiment": "Below target. Carry-over driven by scope underestimation on tracing work and external dependency on security review."
+    },
+    "sprint_42": {
+      "completion_rate_pct": 45,
+      "carry_over_risk": "High — Emily's tracing ticket blocked; canary rollback bug unstarted",
+      "avg_cycle_time_days": 4.5,
+      "blocked_tickets": 1,
+      "total_blocked_days": 3,
+      "sentiment": "At risk. External blockers and accumulated carry-over debt threatening sprint goal."
+    }
+  }
+}
