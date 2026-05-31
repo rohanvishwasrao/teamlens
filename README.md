@@ -261,7 +261,3 @@ In a production deployment, Jira and PagerDuty mocks would be replaced with live
 - [GitHub API](https://docs.github.com/en/rest) — live PR and contributor data
 
 ---
-
-## About
-
-Built as a capstone project for the [AI Engineering course](https://bytebyteai.com/c/ai-engineering/) at ByteByteAI. Demonstrates end-to-end AI application development including RAG, agents, tool calling, reasoning models, and data visualization.
