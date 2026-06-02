@@ -1,25 +1,17 @@
 [theme]
-# Modern dark theme configuration
-primaryColor = "#6366F1"      # Modern indigo for primary actions
+primaryColor = "#6366F1"
 backgroundColor = "#0B1120"
-secondaryBackgroundColor = "#0E1424"
+secondaryBackgroundColor = "#0f1420"
 textColor = "#E2E8F0"
-
-# Font configuration
 font = "sans serif"
-
+ 
 [client]
 showErrorDetails = false
-
+toolbarMode = "minimal"
+ 
 [logger]
 level = "error"
-
+ 
 [server]
-# Reduce padding and margin for a more compact, modern look
 maxUploadSize = 200
-enableCORS = false
 enableXsrfProtection = true
-
-# Performance
-[client.toolbarMode]
-toolbarMode = "minimal"

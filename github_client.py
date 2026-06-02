@@ -101,26 +101,38 @@ def summarize_commit(commit):
 def fetch_contributors(owner, repo):
     """
     Fetches contributor stats — total commits per person.
-    GitHub pre-aggregates this for us, so no pagination needed.
+    Returns a list on success, or a dict with 'error' key on failure.
+    Callers must check: if isinstance(result, dict) and 'error' in result
     """
     url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
-
-    params = { "per_page": 30 }
-
-    response = requests.get(url, headers=HEADERS, params=params)
-    response.raise_for_status()
-
-    contributors = response.json()
-
-    # List comprehension to extract just what we need
-    return [
-        {
-            "login": c["login"],
-            "total_commits": c["contributions"],
-            "avatar_url": c["avatar_url"]
-        }
-        for c in contributors
-    ]
+    params = {"per_page": 30}
+ 
+    try:
+        response = requests.get(url, headers=HEADERS, params=params)
+        response.raise_for_status()
+        contributors = response.json()
+        return [
+            {
+                "login": c["login"],
+                "total_commits": c["contributions"],
+                "avatar_url": c["avatar_url"]
+            }
+            for c in contributors
+        ]
+    except requests.exceptions.HTTPError as e:
+        status = response.status_code
+        if status == 401:
+            return {"error": "GitHub token is missing or invalid. Set GITHUB_TOKEN in your .env file."}
+        elif status == 403:
+            return {"error": "GitHub API rate limit exceeded or access forbidden."}
+        elif status == 404:
+            return {"error": f"GitHub repo not found: {owner}/{repo}"}
+        else:
+            return {"error": f"GitHub API error {status}: {str(e)}"}
+    except requests.exceptions.ConnectionError:
+        return {"error": "Could not connect to GitHub API. Check your internet connection."}
+    except Exception as e:
+        return {"error": f"Unexpected error fetching contributors: {str(e)}"}
 
 
 def compute_pr_cycle_time(pr):

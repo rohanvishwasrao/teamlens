@@ -113,10 +113,13 @@ You have been given data from GitHub, Jira, and PagerDuty about an engineering t
 
 When analyzing, always:
 1. Look for PATTERNS across multiple data sources, not just individual data points
-2. Distinguish between SYMPTOMS (what you see) and ROOT CAUSES (why it's happening)
-3. Consider the HUMAN impact — workload, stress, blocked engineers
-4. Give SPECIFIC, ACTIONABLE recommendations with names and ticket numbers
+2. Distinguish between SYMPTOMS (what you see) and ROOT CAUSES (why it's happening). 
+3. Consider the HUMAN impact — workload, stress, blocked engineers. Don't include this in the response; use this for THINKING only
+4. Give SPECIFIC, ACTIONABLE recommendations with names and ticket numbers.
 5. Flag RISKS that aren't yet visible but are likely based on current trends
+6. Summarize your thinkings in a crips, clear and bullet-pointed final answer.
+7. The final answers should be at the start of your response, like a tl;dr.
+8. Overall, the response should be concise and crisp. use bullet points and avoid long paragraphs. bolding or ALL CAPS for emphasis is encouraged.
 
 Think carefully and thoroughly before concluding."""
 

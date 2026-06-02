@@ -48,7 +48,10 @@ TOOLS = [
                 "Search the TeamLens knowledge base for information about "
                 "pull requests, Jira tickets, PagerDuty incidents, team health, "
                 "burnout signals, blocked work, sprint velocity, and oncall burden. "
-                "Use this for most questions about the team."
+                "Use this for ALL questions about engineers by name — including "
+                "comparisons ('who is better', 'compare X and Y'), burnout risk, "
+                "workload, cycle time, carry-overs, and performance. "
+                "NEVER use get_contributor_stats for engineer health or comparison questions."
             ),
             "parameters": {
                 "type": "object",
@@ -76,9 +79,11 @@ TOOLS = [
         "function": {
             "name": "get_contributor_stats",
             "description": (
-                "Get GitHub contributor statistics — total commits per engineer. "
-                "Use this for questions about individual contribution levels or "
-                "who is most/least active in the codebase."
+               "Get GitHub contributor statistics — total commits per engineer from a GitHub repo. "
+                "ONLY use this for questions explicitly about GitHub commit counts or repository-level "
+                "code contribution history. Do NOT use for engineer health, burnout, performance "
+                "comparisons, workload analysis, or any question that can be answered from "
+                "Jira or PagerDuty data. Requires a valid GitHub token to be configured."
             ),
             "parameters": {
                 "type": "object",
@@ -234,7 +239,19 @@ class TeamLensAgent:
                     "PagerDuty incident data for a platform engineering team. "
                     "Always use your tools to retrieve data before answering. "
                     "Always pass arguments as valid JSON. Be concise but specific. "
-                    "Flag risks clearly."
+                    "Flag risks clearly.\n\n"
+                    "TOOL ROUTING RULES — follow these exactly:\n"
+                    "1. For ANY question about engineers by name — comparisons, burnout, "
+                    "workload, risk, cycle time, carry-overs, performance — ALWAYS use "
+                    "search_knowledge_base. Never use get_contributor_stats for these.\n"
+                    "2. Only use get_contributor_stats when the user explicitly asks about "
+                    "GitHub commit counts or repository contribution history AND a GitHub "
+                    "token is available.\n"
+                    "3. Use get_sprint_summary for questions about sprint velocity, "
+                    "completion rates, or delivery health.\n"
+                    "4. When comparing two engineers (e.g. 'who is better between X and Y'), "
+                    "search for each engineer individually using search_knowledge_base, "
+                    "then synthesize the results."
                )
             }
         ]
