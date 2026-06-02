@@ -65,7 +65,7 @@ TeamLens retrieves relevant data, reasons across all three sources, and gives yo
 ## AI concepts demonstrated
 
 | Concept | Where 
-|---|---|---|
+|---|---|
 | RAG (Retrieval Augmented Generation) | `rag_engine.py` — ChromaDB vector store 
 | Prompt engineering | System prompts in `agent.py` and `reasoning_engine.py` 
 | Embeddings | `sentence-transformers` local model 
