@@ -37,7 +37,6 @@ _SPLASH = """
 <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#090c14;
 z-index:9999;display:flex;flex-direction:column;align-items:center;
 justify-content:center;font-family:'Inter',system-ui,sans-serif;">
-
   <div style="position:relative;width:80px;height:80px;margin-bottom:2rem;">
     <div style="position:absolute;inset:0;border-radius:50%;
     border:2px solid transparent;border-top-color:#4af0a4;
@@ -50,15 +49,12 @@ justify-content:center;font-family:'Inter',system-ui,sans-serif;">
     <div style="position:absolute;inset:0;display:flex;align-items:center;
     justify-content:center;font-size:1.7rem;">🔭</div>
   </div>
-
   <div style="font-size:1.55rem;font-weight:800;letter-spacing:-0.5px;
   background:linear-gradient(135deg,#d8e2f5 30%,#7c9eff 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;margin-bottom:0.3rem;">TeamLens</div>
-
   <div style="font-size:0.68rem;color:#2e3a52;letter-spacing:2px;
   text-transform:uppercase;margin-bottom:2.5rem;">Engineering Health Dashboard</div>
-
   <div style="height:1.2rem;position:relative;overflow:hidden;
   width:300px;text-align:center;margin-bottom:1.5rem;">
     <div style="position:absolute;width:100%;font-size:0.78rem;color:#4af0a4;
@@ -71,16 +67,13 @@ justify-content:center;font-family:'Inter',system-ui,sans-serif;">
     font-family:'Courier New',monospace;opacity:0;animation:tl-s3 3s steps(1,end) infinite;">
       Warming up AI reasoning engine...</div>
   </div>
-
   <div style="width:220px;height:2px;background:#1c2235;border-radius:2px;overflow:hidden;">
     <div style="height:100%;background:linear-gradient(90deg,#4af0a4,#7c9eff);
     border-radius:2px;animation:tl-bar 2.5s ease-out forwards;width:0%;"></div>
   </div>
-
   <div style="position:fixed;bottom:1.5rem;right:2rem;font-family:'Courier New',monospace;
   font-size:0.6rem;color:#1c2235;letter-spacing:1.5px;text-transform:uppercase;">
     Powered by Claude</div>
-
   <style>
     @keyframes tl-cw  { to { transform:rotate(360deg); } }
     @keyframes tl-ccw { to { transform:rotate(-360deg); } }
@@ -114,7 +107,7 @@ _PLOT_H = dict(
 )
 
 # ══════════════════════════════════════════════════════════════════════
-# CSS — injected once per render via function so it always runs
+# CSS
 # ══════════════════════════════════════════════════════════════════════
 def inject_global_css():
     st.markdown("""
@@ -147,7 +140,7 @@ html, body, [class*="css"] { font-family: 'Inter', system-ui, sans-serif !import
 /* ── App header ── */
 .app-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 1.75rem; margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem; margin-bottom: 0;
     border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .brand { display: flex; align-items: center; gap: 0.9rem; }
@@ -225,26 +218,81 @@ html, body, [class*="css"] { font-family: 'Inter', system-ui, sans-serif !import
 [data-testid="stExpander"] p, [data-testid="stExpander"] span { color: #8a9bb8 !important; }
 [data-testid="stExpander"] .stCaption, [data-testid="stExpander"] small { color: #8a9bb8 !important; font-size: 0.8rem !important; }
 
-/* ── Tab navigation (radio as segment control) ── */
+/* ══════════════════════════════════════════════
+   TAB BAR — st.radio restyled as pill nav.
+   We keep st.radio as the actual Streamlit widget
+   (so clicks trigger reruns) but restyle it to
+   look like a modern segment control.
+   ══════════════════════════════════════════════ */
+
+/* Outer pill container */
 div[data-testid="stRadio"] {
-    background: rgba(8,12,24,0.8) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 9px !important;
+    background: rgba(8,12,24,0.75) !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 10px !important;
     padding: 3px !important;
     display: inline-flex !important;
-    margin-bottom: 1.5rem !important;
+    width: auto !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.75rem !important;
 }
-div[data-testid="stRadio"] > div { flex-direction: row !important; gap: 0 !important; }
+
+/* Row of labels */
+div[data-testid="stRadio"] > div {
+    flex-direction: row !important;
+    gap: 0 !important;
+    align-items: center !important;
+}
+
+/* Each label pill */
 div[data-testid="stRadio"] > div > label {
-    background: transparent !important; border-radius: 6px !important;
-    color: #8B9CB8 !important; font-weight: 500 !important; font-size: 0.8rem !important;
-    padding: 0.42rem 1.15rem !important; cursor: pointer !important;
-    transition: all 0.18s !important; margin: 0 !important; border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 7px 20px !important;
+    border-radius: 7px !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    color: #64748B !important;
+    cursor: pointer !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+    transition: color 0.15s ease, background 0.15s ease !important;
+    letter-spacing: -0.1px !important;
+    white-space: nowrap !important;
+    /* Pull the label text and hide the radio circle affordance */
+    -webkit-text-fill-color: #64748B !important;
 }
+
+div[data-testid="stRadio"] > div > label:hover {
+    color: #CBD5E1 !important;
+    -webkit-text-fill-color: #CBD5E1 !important;
+    background: rgba(255,255,255,0.04) !important;
+}
+
+/* Active / selected pill */
 div[data-testid="stRadio"] > div > label:has(input:checked) {
-    background: rgba(99,102,241,0.14) !important; color: #A5B4FC !important;
+    background: rgba(99,102,241,0.15) !important;
+    color: #A5B4FC !important;
+    -webkit-text-fill-color: #A5B4FC !important;
+    font-weight: 600 !important;
 }
-div[data-testid="stRadio"] input[type="radio"] { display: none !important; }
+
+/* Hide the actual radio circle — completely */
+div[data-testid="stRadio"] input[type="radio"] {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide the visual radio dot span Streamlit renders */
+div[data-testid="stRadio"] > div > label > div:first-child {
+    display: none !important;
+}
 
 /* ── Suggestion chips ── */
 .stButton > button {
@@ -461,7 +509,7 @@ def render_ask_ai():
     _, chat_col, _ = st.columns([1, 4, 1])
     with chat_col:
 
-        # Handle pending chip query — process it then fall through to render
+        # Handle pending chip query — process then fall through to render
         if st.session_state.get("pending_query"):
             query = st.session_state.pending_query
             st.session_state.pending_query = None
@@ -469,30 +517,30 @@ def render_ask_ai():
             with st.spinner("Thinking..."):
                 process_query(query)
 
-        if not st.session_state.chat_history:
-            # ── EMPTY STATE: logo + chips only ────────────────────
-            st.markdown("""
-            <div style="text-align:center;padding:2rem 0 1.5rem;">
-                <div style="font-size:2rem;margin-bottom:0.5rem;">🔭</div>
-                <div style="font-size:1.15rem;font-weight:700;color:#d8e2f5;letter-spacing:-0.3px;">
-                    Ask TeamLens AI
-                </div>
-                <div style="font-size:0.78rem;color:#2e3a52;margin-top:0.35rem;
-                font-family:'Courier New',monospace;letter-spacing:0.5px;">
-                    Powered by Claude · reasoning over live metrics
-                </div>
-            </div>""", unsafe_allow_html=True)
+        # ── HEADER + CHIPS — always visible regardless of chat state ──
+        st.markdown("""
+        <div style="text-align:center;padding:2rem 0 1.5rem;">
+            <div style="font-size:2rem;margin-bottom:0.5rem;">🔭</div>
+            <div style="font-size:1.15rem;font-weight:700;color:#d8e2f5;letter-spacing:-0.3px;">
+                Ask TeamLens AI
+            </div>
+            <div style="font-size:0.78rem;color:#4a5568;margin-top:0.35rem;
+            font-family:'Courier New',monospace;letter-spacing:0.5px;">
+                Powered by Claude · reasoning over live metrics
+            </div>
+        </div>""", unsafe_allow_html=True)
 
-            sc1, sc2 = st.columns(2)
-            for i, s in enumerate(_SUGGESTIONS):
-                with (sc1 if i % 2 == 0 else sc2):
-                    if st.button(s, key=f"chip_{i}", use_container_width=True):
-                        st.session_state.pending_query = s
-                        st.session_state["_pending_tab"] = "Ask AI"  # applied before radio on next run
-                        st.rerun()
+        sc1, sc2 = st.columns(2)
+        for i, s in enumerate(_SUGGESTIONS):
+            with (sc1 if i % 2 == 0 else sc2):
+                if st.button(s, key=f"chip_{i}", use_container_width=True):
+                    st.session_state.pending_query = s
+                    st.session_state["_pending_tab"] = "Ask AI"
+                    st.rerun()
 
-        else:
-            # ── CONVERSATION STATE: history only, no logo, no chips ──
+        # ── CONVERSATION HISTORY — only when messages exist ──
+        if st.session_state.chat_history:
+            st.markdown('<div style="margin-top:1.5rem;"></div>', unsafe_allow_html=True)
             for msg in st.session_state.chat_history:
                 if msg["role"] == "user":
                     st.markdown(f"""
@@ -525,10 +573,10 @@ def render_ask_ai():
                         color:#2e3a52;font-family:monospace;margin:4px 0 16px;">{msg['ts']}</div>""",
                         unsafe_allow_html=True)
 
-        # ── Input bar — always last, always exactly once ───────────
+        # ── Input bar — always last, always exactly once ──
         if user_input := st.chat_input("Ask about your team..."):
             st.session_state.chat_history.append({"role": "user", "content": user_input})
-            st.session_state["_pending_tab"] = "Ask AI"  # applied before radio on next run
+            st.session_state["_pending_tab"] = "Ask AI"
             with st.spinner("Thinking..."):
                 process_query(user_input)
             st.rerun()
@@ -567,13 +615,12 @@ if "_pending_tab" not in st.session_state:
     st.session_state["_pending_tab"] = None
 
 # ══════════════════════════════════════════════════════════════════════
-# CSS — always first, before any widgets
+# CSS — always first
 # ══════════════════════════════════════════════════════════════════════
 inject_global_css()
 
 # ══════════════════════════════════════════════════════════════════════
-# SPLASH — placeholder always created so element tree is consistent
-# across all runs (first run fills it; subsequent runs leave it empty)
+# SPLASH
 # ══════════════════════════════════════════════════════════════════════
 _splash_slot = st.empty()
 
@@ -606,9 +653,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════
-# TAB NAVIGATION — ONE st.radio call, drives ONE if/elif block.
-# No key= on the radio so Streamlit never owns _active_tab.
+# TAB NAVIGATION
+# st.radio is the actual Streamlit widget — clicks trigger reruns.
+# CSS above strips all radio circle affordances and reskins it as
+# a modern pill segment control. No hidden widgets, no JS hacks.
+# _pending_tab lets chip clicks and chat submits lock the tab.
 # ══════════════════════════════════════════════════════════════════════
+_TAB_OPTS = ["Dashboard", "Ask AI", "Data"]
+
+# Apply any programmatic tab switch before the radio renders
 _initial = st.session_state.get("_active_tab", "Dashboard")
 if st.session_state.get("_pending_tab"):
     _initial = st.session_state["_pending_tab"]
@@ -617,11 +670,13 @@ if st.session_state.get("_pending_tab"):
 
 selected_tab = st.radio(
     label="",
-    options=["Dashboard", "Ask AI", "Data"],
-    index=["Dashboard", "Ask AI", "Data"].index(_initial),
+    options=_TAB_OPTS,
+    index=_TAB_OPTS.index(_initial),
     horizontal=True,
     label_visibility="collapsed",
+    key="tab_radio",
 )
+# Persist manual tab clicks
 st.session_state["_active_tab"] = selected_tab
 
 if selected_tab == "Dashboard":

@@ -205,6 +205,25 @@ pip freeze > requirements.txt
 
 ---
 
+
+## Screen captures
+
+### Dashboard Views
+
+![alt text](dashboard-view-1-2.png)
+
+![alt text](dashboard-view-2-1.png)
+
+
+### AI Assistant View
+
+![alt text](chat-view-1-1.png)
+
+
+![alt text](chat-view-2-1.png)
+
+
+---
 ## Example queries
 
 ### Simple lookups (Llama 3.3 70B — fast)

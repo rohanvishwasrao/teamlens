@@ -97,11 +97,11 @@ def build_context_for_reasoning(question):
 
 def call_reasoning_model(question, context):
     """
-    Sends the question + context to DeepSeek R1.
+    Sends the question + context to Qwen3 32B.
 
     Key difference from regular model:
     - System prompt explicitly asks for step-by-step thinking
-    - We use DeepSeek R1 which has a built-in <think> scratchpad
+    - We use Qwen3 32B which has a built-in <think> scratchpad
     - Temperature 0.6 gives it room to explore different angles
       (vs 0 which would make it deterministic/shallow)
     """
@@ -118,7 +118,7 @@ When analyzing, always:
 4. Give SPECIFIC, ACTIONABLE recommendations with names and ticket numbers.
 5. Flag RISKS that aren't yet visible but are likely based on current trends
 6. Summarize your thinkings in a crips, clear and bullet-pointed final answer.
-7. The final answers should be at the start of your response, like a tl;dr.
+7. The final answers should be at the start of your response, like a tl;dr. Make sure to format the tl;dr as a maximum 5 point bullet list. EACH ON A SEPARATE LINE. AVOID LONG PARAGRAPHS.
 8. Overall, the response should be concise and crisp. use bullet points and avoid long paragraphs. bolding or ALL CAPS for emphasis is encouraged.
 
 Think carefully and thoroughly before concluding."""
@@ -133,7 +133,7 @@ Question: {question}
 Think step by step through the data before answering."""
 
     # Print a message to indicate we're about to call the reasoning model
-    print("  → Routing to reasoning model (DeepSeek R1)...")
+    print("  → Routing to reasoning model (Qwen3 32B)...")
 
     # Call the Groq API with the specified model and parameters
     response = client.chat.completions.create(
@@ -188,7 +188,7 @@ Think step by step through the data before answering."""
 def reason(question):
     """
     Public function the agent will call for reasoning questions.
-    Builds context, calls DeepSeek R1, returns structured result.
+    Builds context, calls Qwen3 32B, returns structured result.
     """
     # Print status message indicating we're starting the reasoning process
     print(f"\n  [Reasoning engine] Building context for: '{question}'")
@@ -231,7 +231,7 @@ if __name__ == "__main__":
         # If the result contains thinking output (the model's internal reasoning)
         if result["thinking"]:
             # Print a header indicating this is the chain-of-thought
-            print(f"\n[Chain of thought — DeepSeek R1 thinking out loud]")
+            print(f"\n[Chain of thought — Qwen3 32B thinking out loud]")
             
             # Extract the first 500 characters of the thinking to avoid flooding the terminal
             thinking_preview = result["thinking"][:500]
