@@ -64,18 +64,18 @@ TeamLens retrieves relevant data, reasons across all three sources, and gives yo
 
 ## AI concepts demonstrated
 
-| Concept | Where | Course module |
-|---|---|---|
-| RAG (Retrieval Augmented Generation) | `rag_engine.py` — ChromaDB vector store | P2 |
-| Prompt engineering | System prompts in `agent.py` and `reasoning_engine.py` | P2 |
-| Embeddings | `sentence-transformers` local model | P2 |
-| Tool calling | `TOOLS` definition + `execute_tool()` in `agent.py` | P3 |
-| ReACT agent | `while True` loop in `agent.py` | P3 |
-| Multi-step workflows | Agent calling multiple tools per question | P3 |
-| Reasoning models | Qwen3-32B via `reasoning_engine.py` | P4 |
-| Chain-of-thought prompting | `<think>` block extraction in reasoning engine | P4 |
-| Inference-time scaling | Routing complex questions to a stronger model | P4 |
-| Data visualization | Plotly charts in Streamlit dashboard | P5 lite |
+| Concept | Where 
+|---|---|
+| RAG (Retrieval Augmented Generation) | `rag_engine.py` — ChromaDB vector store 
+| Prompt engineering | System prompts in `agent.py` and `reasoning_engine.py` 
+| Embeddings | `sentence-transformers` local model 
+| Tool calling | `TOOLS` definition + `execute_tool()` in `agent.py` 
+| ReACT agent | `while True` loop in `agent.py` 
+| Multi-step workflows | Agent calling multiple tools per question 
+| Reasoning models | Qwen3-32B via `reasoning_engine.py` 
+| Chain-of-thought prompting | `<think>` block extraction in reasoning engine 
+| Inference-time scaling | Routing complex questions to a stronger model 
+| Data visualization | Plotly charts in Streamlit dashboard
 
 ---
 
